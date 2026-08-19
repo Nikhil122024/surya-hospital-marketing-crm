@@ -1,0 +1,2 @@
+import { GenericPage } from "../modules-pages";
+export default function SettingsPage() { return <GenericPage title="Settings" description="Manage your profile, notifications, security and appearance."/>; }

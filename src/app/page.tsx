@@ -1,7 +1,9 @@
+"use client";
+
+import Link from "next/link";
+import { ArrowRight, BriefcaseBusiness, ShieldCheck } from "lucide-react";
+import { BrandLogo } from "@/components/brand-logo";
+
 export default function Home() {
-  return (
-    <main>
-      <div>Hello world!</div>
-    </main>
-  );
+  return <main className="min-h-screen bg-[#f4f8fb] px-5 py-8 text-[#102a43] sm:px-10 lg:px-16"><div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-6xl flex-col justify-between"><header className="flex items-center gap-4"><BrandLogo className="h-16 w-16 rounded-2xl bg-white p-1 shadow-sm" /><div><p className="text-xl font-extrabold tracking-tight">SURYA HOSPITAL</p><p className="text-xs font-semibold text-slate-500">Marketing & Operations CRM</p></div></header><section className="py-14 lg:py-20"><div className="max-w-2xl"><p className="text-sm font-extrabold uppercase tracking-[.2em] text-teal-700">Secure internal portal</p><h1 className="mt-4 text-4xl font-extrabold leading-tight sm:text-6xl">Welcome to Surya Hospital&apos;s secure internal portal</h1><p className="mt-5 max-w-xl text-base leading-7 text-slate-600">Choose the workspace that matches your role and continue with your registered official account.</p></div><h2 className="mt-12 text-lg font-extrabold">How would you like to continue?</h2><div className="mt-5 grid gap-5 md:grid-cols-2"><Link href="/login" className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_12px_30px_rgba(16,42,67,.06)] transition hover:-translate-y-1 hover:border-blue-300"><div className="flex items-start justify-between"><div className="rounded-xl bg-blue-50 p-3 text-blue-600"><BriefcaseBusiness size={24} /></div><ArrowRight className="text-slate-300 transition group-hover:translate-x-1 group-hover:text-blue-600" /></div><h3 className="mt-6 text-xl font-extrabold">Employee Portal</h3><p className="mt-2 text-sm text-slate-500">For Marketing and Department Employees</p><span className="mt-6 inline-flex text-sm font-bold text-blue-600">Continue as Employee</span></Link><Link href="/admin/login" className="group rounded-2xl border border-slate-200 bg-[#102a43] p-6 text-white shadow-[0_12px_30px_rgba(16,42,67,.12)] transition hover:-translate-y-1"><div className="flex items-start justify-between"><div className="rounded-xl bg-white/10 p-3 text-teal-300"><ShieldCheck size={24} /></div><ArrowRight className="text-blue-200 transition group-hover:translate-x-1" /></div><h3 className="mt-6 text-xl font-extrabold">Administration Portal</h3><p className="mt-2 text-sm text-blue-100">Management & Administrative Access</p><span className="mt-6 inline-flex text-sm font-bold text-teal-300">Continue as Admin</span></Link></div></section><footer className="flex justify-between text-xs font-semibold text-slate-400"><span>Authorized personnel only</span><span>© Surya Hospital</span></footer></div></main>;
 }

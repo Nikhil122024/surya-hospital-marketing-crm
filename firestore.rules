@@ -1,0 +1,99 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function role() { return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role; }
+    function profile() { return get(/databases/$(database)/documents/users/$(request.auth.uid)).data; }
+    function admin() { return signedIn() && role() in ['SUPER_ADMIN', 'ADMIN']; }
+    function manager() { return signedIn() && role() in ['SUPER_ADMIN', 'ADMIN', 'MARKETING_MANAGER']; }
+    function marketing() { return signedIn() && profile().department == 'MARKETING'; }
+    function gpsAllowed() { return marketing() || profile().gpsPolicy == 'MANDATORY'; }
+    function owns(field) { return signedIn() && resource.data[field] == request.auth.uid; }
+
+    match /users/{userId} {
+      allow read: if manager() || (signedIn() && userId == request.auth.uid);
+      allow create, delete: if admin();
+      allow update: if admin() || (signedIn() && userId == request.auth.uid && request.resource.data.role == resource.data.role && request.resource.data.department == resource.data.department && request.resource.data.gpsPolicy == resource.data.gpsPolicy && request.resource.data.campAccess == resource.data.campAccess);
+    }
+    match /departments/{id} { allow read: if signedIn(); allow write: if admin(); }
+    match /employeeRequests/{id} {
+      allow create: if true && request.resource.data.status == 'PENDING' && !('password' in request.resource.data) && !('confirmPassword' in request.resource.data);
+      allow read, update, delete: if admin();
+    }
+    match /attendance/{id} {
+      allow read: if manager() || owns('employeeId');
+      allow create: if signedIn() && request.resource.data.employeeId == request.auth.uid && request.resource.data.department == profile().department && request.resource.data.gpsPolicy == profile().gpsPolicy && request.resource.data.gpsEnabled == true && gpsAllowed();
+      allow update: if manager() || owns('employeeId');
+      allow delete: if admin();
+    }
+    match /doctorVisits/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn();
+      allow update: if manager() || owns('employeeId') || owns('createdBy');
+      allow delete: if manager();
+    }
+    match /leads/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn();
+      allow update: if manager() || owns('executiveId') || owns('createdBy');
+      allow delete: if manager();
+    }
+    match /camps/{id} {
+      allow read: if signedIn();
+      allow write: if signedIn();
+    }
+    match /expenses/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn();
+      allow update: if manager() || owns('employeeId') || owns('createdBy');
+      allow delete: if manager();
+    }
+    match /dailyReports/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn();
+      allow update: if manager() || owns('employeeId') || owns('createdBy');
+      allow delete: if manager();
+    }
+    match /locationHistory/{id} {
+      allow read: if manager() || owns('employeeId');
+      allow create: if signedIn() && request.resource.data.employeeId == request.auth.uid && gpsAllowed() && exists(/databases/$(database)/documents/attendance/$(request.resource.data.attendanceId)) && get(/databases/$(database)/documents/attendance/$(request.resource.data.attendanceId)).data.employeeId == request.auth.uid && get(/databases/$(database)/documents/attendance/$(request.resource.data.attendanceId)).data.status == 'CHECKED_IN';
+      allow update, delete: if manager();
+    }
+    match /fieldVisits/{id} {
+      allow read: if manager() || owns('employeeId');
+      allow create: if signedIn() && request.resource.data.employeeId == request.auth.uid && gpsAllowed() && exists(/databases/$(database)/documents/attendance/$(request.resource.data.attendanceId)) && get(/databases/$(database)/documents/attendance/$(request.resource.data.attendanceId)).data.employeeId == request.auth.uid && get(/databases/$(database)/documents/attendance/$(request.resource.data.attendanceId)).data.status == 'CHECKED_IN';
+      allow update: if manager() || owns('employeeId');
+      allow delete: if manager();
+    }
+    match /campParticipants/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn() && request.resource.data.employeeId == request.auth.uid && profile().campAccess == true;
+      allow update: if manager() || owns('employeeId');
+      allow delete: if manager();
+    }
+    match /campAttendance/{id} {
+      allow read: if manager() || owns('employeeId');
+      allow create: if signedIn() && request.resource.data.employeeId == request.auth.uid && profile().campAccess == true;
+      allow update: if manager() || owns('employeeId');
+      allow delete: if manager();
+    }
+    match /campLocationHistory/{id} {
+      allow read: if manager() || owns('employeeId');
+      allow create: if signedIn() && request.resource.data.employeeId == request.auth.uid && profile().campAccess == true;
+      allow update, delete: if manager();
+    }
+    match /tasks/{id} {
+      allow read: if manager() || (signedIn() && resource.data.assignedTo == request.auth.uid);
+      allow create: if signedIn() && request.resource.data.department == profile().department;
+      allow update: if manager() || owns('assignedTo') || owns('assignedBy');
+      allow delete: if manager();
+    }
+    match /hospitals/{id} { allow read: if signedIn(); allow write: if manager(); }
+    match /doctors/{id} { allow read: if signedIn(); allow write: if manager(); }
+    match /mou/{id} { allow read: if signedIn(); allow write: if manager(); }
+    match /targets/{id} { allow read: if signedIn(); allow write: if manager(); }
+    match /notifications/{id} { allow read: if signedIn(); allow write: if manager(); }
+    match /settings/{id} { allow read: if signedIn(); allow write: if manager(); }
+    match /auditLogs/{id} { allow read: if manager(); allow create: if signedIn(); allow update, delete: if admin(); }
+  }
+}

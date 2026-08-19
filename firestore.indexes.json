@@ -1,0 +1,12 @@
+{
+  "indexes": [
+    { "collectionGroup": "doctorVisits", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "employeeId", "order": "ASCENDING" }, { "fieldPath": "date", "order": "DESCENDING" }] },
+    { "collectionGroup": "leads", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "executiveId", "order": "ASCENDING" }, { "fieldPath": "createdAt", "order": "DESCENDING" }] },
+    { "collectionGroup": "attendance", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "employeeId", "order": "ASCENDING" }, { "fieldPath": "date", "order": "DESCENDING" }] },
+    { "collectionGroup": "locationHistory", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "employeeId", "order": "ASCENDING" }, { "fieldPath": "timestamp", "order": "DESCENDING" }] },
+    { "collectionGroup": "campLocationHistory", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "campId", "order": "ASCENDING" }, { "fieldPath": "timestamp", "order": "DESCENDING" }] },
+    { "collectionGroup": "campParticipants", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "campId", "order": "ASCENDING" }, { "fieldPath": "status", "order": "ASCENDING" }] },
+    { "collectionGroup": "tasks", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "department", "order": "ASCENDING" }, { "fieldPath": "dueDate", "order": "ASCENDING" }] }
+  ],
+  "fieldOverrides": []
+}

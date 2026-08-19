@@ -1,0 +1,10 @@
+{
+  "name": "Surya Hospital Marketing CRM",
+  "short_name": "Surya CRM",
+  "description": "Internal Marketing Operations Portal - Surya Hospital",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#f4f8fb",
+  "theme_color": "#1473e6",
+  "icons": [{ "src": "/images/surya.jpg", "sizes": "400x400", "type": "image/jpeg", "purpose": "any maskable" }]
+}

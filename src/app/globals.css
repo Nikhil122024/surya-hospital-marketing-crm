@@ -1,1 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap');
 @import "tailwindcss";
+
+:root { --ink: #102a43; --muted: #627d98; --line: #d9e2ec; --surface: #ffffff; --canvas: #f4f8fb; --blue: #1473e6; --teal: #09a88a; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--canvas); color: var(--ink); font-family: 'DM Sans', sans-serif; }
+h1,h2,h3,h4 { font-family: 'Manrope', sans-serif; letter-spacing: 0; }
+button, a, input, select, textarea { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+.scrollbar-none::-webkit-scrollbar { display: none; }
+
+html.dark { color-scheme: dark; }
+html.dark body { background: #0f172a; color: #e2e8f0; }
+html.dark [class*="bg-white"] { background-color: #111827 !important; }
+html.dark [class*="bg-[#f4f8fb]"] { background-color: #0f172a !important; }
+html.dark [class*="bg-[#eef3f7]"] { background-color: #0f172a !important; }
+html.dark [class*="bg-slate-50"] { background-color: #1e293b !important; }
+html.dark [class*="border-slate-"] { border-color: #334155 !important; }
+html.dark [class*="text-[#102a43]"] { color: #e2e8f0 !important; }
+html.dark [class*="text-slate-500"] { color: #94a3b8 !important; }
+html.dark [class*="text-slate-400"] { color: #64748b !important; }
+html.dark input, html.dark select, html.dark textarea { background-color: #111827; border-color: #334155; color: #e2e8f0; }
+html.dark input::placeholder, html.dark textarea::placeholder { color: #64748b; }

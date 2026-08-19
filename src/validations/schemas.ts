@@ -1,0 +1,10 @@
+import { z } from "zod";
+export const employeeSchema = z.object({ name: z.string().min(2), email: z.string().email(), phone: z.string().min(10), department: z.string().min(2) });
+export const doctorSchema = z.object({ name: z.string().min(2), specialization: z.string().min(2), hospital: z.string().min(2), phone: z.string().min(10) });
+export const hospitalSchema = z.object({ name: z.string().min(2), location: z.string().min(2), contact: z.string().min(2), phone: z.string().min(10) });
+export const leadSchema = z.object({ patient: z.string().min(2), phone: z.string().min(10), department: z.string().min(2), status: z.string() });
+export const visitSchema = z.object({ doctor: z.string().min(2), hospital: z.string().min(2), date: z.string(), purpose: z.string().min(5) });
+export const expenseSchema = z.object({ category: z.string(), description: z.string().min(3), amount: z.number().positive() });
+export const campSchema = z.object({ name: z.string().min(2), location: z.string().min(2), date: z.string() });
+export const mouSchema = z.object({ organization: z.string().min(2), contact: z.string().min(2), expiryDate: z.string() });
+export const dailyReportSchema = z.object({ date: z.string(), totalVisits: z.number().nonnegative(), leads: z.number().nonnegative(), revenue: z.number().nonnegative(), challenges: z.string(), tomorrowPlan: z.string() });

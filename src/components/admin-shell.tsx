@@ -1,0 +1,21 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { BarChart3, Building2, ClipboardList, FileText, Hospital, LayoutDashboard, ListTodo, LogOut, MapPin, Settings, ShieldCheck, Stethoscope, Users, WalletCards } from "lucide-react";
+import { BrandLogo } from "@/components/brand-logo";
+import { Avatar, Button } from "@/components/ui";
+import { useAuth } from "@/components/auth-provider";
+import { signOut } from "@/lib/firebase/auth";
+import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/theme-toggle";
+
+const links = [{ label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard }, { label: "Employee Requests", href: "/admin/employee-requests", icon: ClipboardList }, { label: "Tasks", href: "/admin/tasks", icon: ListTodo }, { label: "Departments", href: "/admin/departments", icon: Building2 }, { label: "Employees", href: "/admin/employees", icon: Users }, { label: "Marketing Team", href: "/admin/marketing", icon: Users }, { label: "Hospitals", href: "/admin/hospitals", icon: Hospital }, { label: "Doctors", href: "/admin/doctors", icon: Stethoscope }, { label: "Doctor Visits", href: "/admin/visits", icon: Stethoscope }, { label: "Leads", href: "/admin/leads", icon: Users }, { label: "Camps", href: "/admin/camps", icon: MapPin }, { label: "Attendance", href: "/admin/attendance", icon: ClipboardList }, { label: "GPS Tracking", href: "/admin/gps", icon: MapPin }, { label: "Expenses", href: "/admin/expenses", icon: WalletCards }, { label: "Targets", href: "/admin/targets", icon: ShieldCheck }, { label: "MOU", href: "/admin/mou", icon: Building2 }, { label: "Daily Reports", href: "/admin/daily-reports", icon: ClipboardList }, { label: "Notifications", href: "/admin/notifications", icon: FileText }, { label: "Reports", href: "/admin/reports", icon: BarChart3 }, { label: "Audit Logs", href: "/admin/audit-logs", icon: ShieldCheck }, { label: "Settings", href: "/admin/settings", icon: Settings }];
+
+export function AdminShell({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname(); const router = useRouter(); const { user } = useAuth();
+  if (pathname === "/admin/login") return <>{children}</>;
+  const logout = async () => { try { await signOut(); } finally { router.replace("/"); } };
+  return <div className="min-h-screen bg-[#eef3f7]"><aside className="fixed inset-y-0 left-0 z-40 hidden w-[260px] border-r border-slate-200 bg-[#102a43] text-white lg:block"><div className="flex h-full flex-col"><div className="flex h-[82px] items-center gap-3 border-b border-white/10 px-5"><BrandLogo compact className="rounded-lg bg-white p-1" /><div><p className="font-extrabold">SURYA HOSPITAL</p><p className="text-[9px] font-bold uppercase tracking-[.18em] text-blue-200">Administration Portal</p></div></div><nav className="flex-1 space-y-1 overflow-y-auto px-3 py-5">{links.map((item) => { const Icon = item.icon; const active = pathname === item.href; return <Link key={item.href} href={item.href} className={cn("flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-semibold text-blue-100 hover:bg-white/10", active && "bg-teal-500 text-white")}><Icon size={17} />{item.label}</Link>; })}</nav><Button variant="ghost" onClick={logout} className="m-3 justify-start text-blue-100 hover:bg-white/10 hover:text-white"><LogOut size={17} />Admin sign out</Button></div></aside><div className="min-h-screen lg:pl-[260px]"><header className="sticky top-0 z-30 flex h-[82px] items-center justify-between border-b border-slate-200 bg-white/95 px-5 backdrop-blur-xl sm:px-8"><div><p className="text-[10px] font-extrabold uppercase tracking-[.18em] text-teal-600">Administration</p><p className="font-extrabold text-[#102a43]">Hospital Management & Operations Console</p></div><div className="flex items-center gap-2 sm:gap-3"><ThemeToggle /><Button variant="ghost" onClick={logout} className="hidden sm:inline-flex"><LogOut size={17} />Sign out</Button><Avatar name={user?.name ?? "Admin"} photoURL={user?.photoURL} /><div className="hidden sm:block"><p className="text-xs font-bold text-[#102a43]">{user?.name ?? "Administrator"}</p><p className="text-[10px] text-slate-400">{user?.role ?? "ADMIN"}</p></div></div></header><main className="mx-auto max-w-[1600px] p-5 sm:p-8">{children}</main></div></div>;
+}
+

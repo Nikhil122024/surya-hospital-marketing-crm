@@ -1,0 +1,3 @@
+"use client";
+import { CollectionPage } from "@/components/collection-page";
+export default function AdminDepartmentsPage() { return <CollectionPage title="Departments" description="Manage department names, access boundaries and operational ownership." collection="departments" actionLabel="Add department" fields={[{ name: "name", label: "Department name", required: true }, { name: "gpsPolicy", label: "GPS policy", type: "select", options: ["MANDATORY", "OPTIONAL", "DISABLED"] }, { name: "active", label: "Status", type: "select", options: ["true", "false"] }]} columns={[{ name: "name", label: "Department" }, { name: "gpsPolicy", label: "GPS policy" }, { name: "active", label: "Active" }]} statusField="gpsPolicy" />; }
